@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 2 – Zero Hunger | Global Food Security & Hunger Risk Intelligence Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF7;
+  --bg-elevated: #FFFFFF;
+  --bg-secondary: #F3F4F1;
+  --bg-tertiary: #EBEEE8;
+  --border: #E5E8E3;
+  --border-strong: #C8D2C5;
+  --text: #1A2E1A;
+  --text-muted: #5C6B5C;
+  --text-subtle: #8A9A8A;
+  --primary: #2D5F3F;
+  --primary-light: #4A7C3A;
+  --primary-bright: #6BB85B;
+  --primary-glow: rgba(107, 184, 91, 0.15);
+  --accent: #E8A53A;
+  --warning: #D85A3A;
+  --shadow: 0 2px 8px rgba(45, 95, 63, 0.08);
+  --shadow-lg: 0 10px 30px rgba(45, 95, 63, 0.12);
+  --shadow-md: 0 4px 16px rgba(45, 95, 63, 0.1);
+}
+.dark {
+  --bg: #0E1812;
+  --bg-elevated: #162017;
+  --bg-secondary: #1A261C;
+  --bg-tertiary: #233025;
+  --border: #2A3A2C;
+  --border-strong: #3D4F3F;
+  --text: #E8F0E4;
+  --text-muted: #94A894;
+  --text-subtle: #6A7A6A;
+  --primary: #88D977;
+  --primary-light: #6BB85B;
+  --primary-bright: #A4E895;
+  --primary-glow: rgba(136, 217, 119, 0.12);
+  --accent: #F2BC5A;
+  --warning: #F0795A;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, var(--primary-glow) 0%, transparent 50%),
+    radial-gradient(circle at 85% 80%, var(--primary-glow) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.7;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0;
+}
+.card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+}
+.card:hover { box-shadow: var(--shadow-md); }
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.dark .btn-primary { color: #0E1812; background-color: var(--primary-bright); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text);
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover { background-color: var(--bg-secondary); border-color: var(--primary); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.4s ease-out; }
+.hero-bg {
+  background: linear-gradient(135deg, #1F4A2E 0%, #2D5F3F 50%, #4A7C3A 100%);
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(232,165,58,0.18) 0%, transparent 45%);
+  pointer-events: none;
+}
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath fill='rgba(255,255,255,0.04)' d='M40 0L80 40L40 80L0 40Z'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.tooltip { position: relative; display: inline-block; cursor: help; }
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  text-align: left;
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  transition: opacity 0.2s, visibility 0.2s;
+  width: max-content;
+  max-width: 280px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 5px;
+  vertical-align: middle;
+  font-family: 'Sora', sans-serif;
+}
+.flow-step {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+  position: relative;
+}
+.flow-step:hover { border-color: var(--primary); transform: translateY(-2px); }
+.flow-step.accent { border-left: 4px solid var(--primary-bright); }
+.flag { font-size: 1.4em; line-height: 1; display: inline-block; }
+.country-slot {
+  background-color: var(--bg-elevated);
+  border: 2px dashed var(--border-strong);
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.2s;
+  position: relative;
+}
+.country-slot.filled {
+  border-style: solid;
+  border-color: var(--primary);
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-secondary) 100%);
+}
+.country-slot.duplicate { border-color: var(--accent); }
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 50;
+  box-shadow: var(--shadow-lg);
+  margin-top: 4px;
+}
+.autocomplete-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.autocomplete-item:hover, .autocomplete-item.highlighted { background-color: var(--bg-secondary); }
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+}
+.comparison-table th, .comparison-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+.comparison-table th {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  font-family: 'Sora', sans-serif;
+}
+.comparison-table .indicator-label {
+  background-color: var(--bg-secondary);
+  font-weight: 500;
+  color: var(--text-muted);
+  width: 240px;
+  min-width: 200px;
+}
+.comparison-table .section-row td {
+  background-color: var(--bg-tertiary);
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Sora', sans-serif;
+}
+.comparison-table td.col-data { background-color: var(--bg-elevated); }
+.comparison-table tr:hover td.col-data { background-color: var(--bg-secondary); }
+.pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pill-green { background-color: var(--primary-glow); color: var(--primary); }
+.pill-amber { background-color: rgba(232, 165, 58, 0.15); color: var(--accent); }
+.pill-red { background-color: rgba(216, 90, 58, 0.15); color: var(--warning); }
+.pill-neutral { background-color: var(--bg-tertiary); color: var(--text-muted); }
+.input {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+.input::placeholder { color: var(--text-subtle); }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+  text-decoration: none;
+}
+.nav-item:hover { background-color: var(--bg-secondary); color: var(--text); }
+.nav-item.active { background-color: var(--primary-glow); color: var(--primary); font-weight: 600; }
+.crop-card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.crop-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.chart-container {
+  position: relative;
+  height: 340px;
+  width: 100%;
+  min-height: 320px;
+  padding: 8px;
+}
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  background-color: var(--primary-bright);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+.stat-card {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: all 0.2s;
+}
+.stat-card:hover { box-shadow: var(--shadow-md); }
+.mobile-nav { display: none; }
+@media (max-width: 1024px) {
+  .desktop-sidebar { display: none; }
+  .mobile-nav { display: flex; }
+  .main-content { margin-left: 0 !important; padding: 80px 16px 40px !important; }
+}
+.theme-toggle {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+}
+.theme-toggle:hover { background-color: var(--bg-tertiary); }
+.sidebar-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-bright) 100%);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+}
+.dark .sidebar-logo { color: #0E1812; background: linear-gradient(135deg, var(--primary-bright) 0%, var(--accent) 100%); }
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+}
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+.section-divider h3 {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.food-flow-connector {
+  width: 2px;
+  height: 28px;
+  background: linear-gradient(180deg, var(--primary-bright) 0%, var(--primary) 100%);
+  margin: 0 auto;
+  position: relative;
+}
+.food-flow-connector::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--primary);
+}
+.methodology-note {
+  background-color: var(--primary-glow);
+  border-left: 3px solid var(--primary);
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.warning-note {
+  background-color: rgba(216, 90, 58, 0.08);
+  border-left: 3px solid var(--warning);
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+.module-card {
+  position: relative;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-bright), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.module-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.module-card:hover::before { transform: scaleX(1); }
+.module-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-glow) 0%, var(--bg-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.country-detail-stat {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: all 0.2s;
+}
+.country-detail-stat:hover { border-color: var(--primary-light); }
+@media (max-width: 768px) {
+  .bento-grid { grid-template-columns: 1fr; }
+}
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .risk-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =========================================================
+   DATA LAYER
+   ========================================================= */
+const COUNTRIES = [
+  {
+    name: "India", code: "IN", flag: "🇮🇳",
+    population: "1.451 billion", populationYear: "2024",
+    undernourishment: "12.0%",
+    peopleAffectedByHunger: "172.1 million",
+    moderateSevereFoodInsecurity: "≈40%*",
+    severeFoodInsecurity: "≈22%*",
+    ghi2025: "25.8",
+    foodProduced: "≈1,100–1,200 million tonnes",
+    foodLost: "≈68 million tonnes",
+    foodWasted: "≈78 million tonnes",
+    foodSurplus: "≈150–200 million tonnes",
+    peopleNeedingFood: "≈172 million"
+  },
+  {
+    name: "China", code: "CN", flag: "🇨🇳",
+    population: "1.409 billion", populationYear: "2024",
+    undernourishment: "<2.5%",
+    peopleAffectedByHunger: "<35.2 million",
+    moderateSevereFoodInsecurity: "Low / <10%*",
+    severeFoodInsecurity: "Low / <2.5%*",
+    ghi2025: "<5",
+    foodProduced: "≈2,000–2,100 million tonnes",
+    foodLost: "≈120–140 million tonnes",
+    foodWasted: "≈100–120 million tonnes",
+    foodSurplus: "≈300–400 million tonnes",
+    peopleNeedingFood: "<35 million"
+  },
+  {
+    name: "United States", code: "US", flag: "🇺🇸",
+    population: "340.0 million", populationYear: "2024",
+    undernourishment: "2.5%",
+    peopleAffectedByHunger: "≈8.5 million",
+    moderateSevereFoodInsecurity: "10.3%",
+    severeFoodInsecurity: "≈1.0%",
+    ghi2025: "Not ranked",
+    foodProduced: "≈500–550 million tonnes",
+    foodLost: "≈35–40 million tonnes",
+    foodWasted: "≈55–60 million tonnes",
+    foodSurplus: "≈100–150 million tonnes",
+    peopleNeedingFood: "≈8–9 million"
+  },
+  {
+    name: "Nigeria", code: "NG", flag: "🇳🇬",
+    population: "232.7 million", populationYear: "2024",
+    undernourishment: "19.9%",
+    peopleAffectedByHunger: "45.4 million",
+    moderateSevereFoodInsecurity: "74.8%",
+    severeFoodInsecurity: "≈32%*",
+    ghi2025: "32.8",
+    foodProduced: "≈300–350 million tonnes",
+    foodLost: "≈70–90 million tonnes",
+    foodWasted: "≈20–30 million tonnes",
+    foodSurplus: "≈50–80 million tonnes",
+    peopleNeedingFood: "≈45 million"
+  }
+];
+
+const CROPS = [
+  { name: "Rice", type: "food", states: "Andhra Pradesh, Assam, Bihar, West Bengal, Punjab, Tamil Nadu, Uttar Pradesh, Odisha", season: "Kharif", soil: "Clay loam / alluvial / loam", temperature: "20–35°C", water: "450–700 mm/crop", sunlight: "6–8 h/day", attackers: "Stem borer, brown planthopper, blast, bacterial leaf blight", growingTechnique: "Transplanting or DSR; AWD/SRI for water efficiency", nutrition: { calories: "~345 kcal", protein: "~6.8 g", carbohydrates: "~78 g", fibre: "~0.5–1 g", fat: "~0.5 g", micronutrients: "B vitamins, manganese, phosphorus", gi: "Medium-high to high", benefits: "Major carbohydrate and energy source", processing: "Milling removes bran and reduces fibre/micronutrients" } },
+  { name: "Wheat", type: "food", states: "Punjab, Haryana, Uttar Pradesh, Madhya Pradesh, Rajasthan, Bihar", season: "Rabi", soil: "Loamy / clay loam", temperature: "10–25°C", water: "450–600 mm/crop", sunlight: "6–8 h/day", attackers: "Rust (yellow/brown/stem), aphids, termites", growingTechnique: "Drilling; zero-till in some regions", nutrition: { calories: "~340 kcal", protein: "~12 g", carbohydrates: "~72 g", fibre: "~2.7 g", fat: "~1.5 g", micronutrients: "Iron, selenium, B vitamins", gi: "Medium", benefits: "Major staple; protein-rich compared to rice", processing: "Roller milling; refining reduces bran & B vitamins" } },
+  { name: "Groundnut", type: "food", states: "Andhra Pradesh, Gujarat, Tamil Nadu, Telangana, Karnataka", season: "Kharif", soil: "Sandy loam / well-drained", temperature: "20–30°C", water: "400–600 mm/crop", sunlight: "6–8 h/day", attackers: "Aflatoxin fungus, leaf miner, armyworm", growingTechnique: "Sowing in rows; bunding for moisture", nutrition: { calories: "~567 kcal", protein: "~26 g", carbohydrates: "~16 g", fibre: "~8 g", fat: "~49 g", micronutrients: "Vitamin E, folate, magnesium", gi: "Low", benefits: "High oil and protein source", processing: "Roasting/boiling; oil extraction" } },
+  { name: "Pigeon Pea / Tur", type: "food", states: "Maharashtra, Karnataka, Andhra Pradesh, Telangana, Uttar Pradesh", season: "Kharif", soil: "Sandy loam / well-drained", temperature: "20–35°C", water: "300–500 mm/crop", sunlight: "6–8 h/day", attackers: "Pod borer (Helicoverpa), wilt, sterility mosaic", growingTechnique: "Often intercropped with cotton/sorghum", nutrition: { calories: "~343 kcal", protein: "~22 g", carbohydrates: "~62 g", fibre: "~15 g", fat: "~1.5 g", micronutrients: "Iron, potassium, B vitamins", gi: "Low", benefits: "High protein pulse; nitrogen-fixing crop", processing: "Dehulling for dal" } },
+  { name: "Sugarcane", type: "food", states: "Uttar Pradesh, Maharashtra, Karnataka, Tamil Nadu, Andhra Pradesh", season: "Annual (9–18 month crop)", soil: "Deep loam / alluvial", temperature: "20–35°C", water: "1500–2500 mm/crop", sunlight: "7–9 h/day", attackers: "Borers, red rot, smut", growingTechnique: "Sett planting; ratoon management", nutrition: { calories: "~390 kcal (per 100g juice)", protein: "~0.4 g", carbohydrates: "~98 g (sucrose)", fibre: "N/A", fat: "~0 g", micronutrients: "Iron, calcium, potassium", gi: "Low (in whole form)", benefits: "Sugar and jaggery source; ethanol feedstock", processing: "Crushing → sugar/jaggery" } },
+  { name: "Cotton", type: "non-food", states: "Gujarat, Maharashtra, Telangana, Andhra Pradesh, Karnataka", season: "Kharif", soil: "Black cotton soil / sandy loam", temperature: "20–30°C", water: "600–900 mm/crop", sunlight: "6–8 h/day", attackers: "Bollworm, whitefly, leafhopper", growingTechnique: "BT cotton; wide row spacing", nutrition: null },
+  { name: "Maize", type: "food", states: "Karnataka, Andhra Pradesh, Bihar, Tamil Nadu, Telangana", season: "Kharif & Rabi", soil: "Well-drained loam", temperature: "18–30°C", water: "500–700 mm/crop", sunlight: "6–8 h/day", attackers: "Fall armyworm, stem borer, cob borer", growingTechnique: "Direct sowing; ridge planting", nutrition: { calories: "~365 kcal", protein: "~9 g", carbohydrates: "~74 g", fibre: "~7 g (whole corn)", fat: "~4 g", micronutrients: "Vitamin B3, B5, folate, magnesium", gi: "Medium", benefits: "Feed, food, industrial starch", processing: "Dry/wet milling" } },
+  { name: "Banana", type: "food", states: "Tamil Nadu, Maharashtra, Gujarat, Andhra Pradesh, Karnataka", season: "Perennial / year-round", soil: "Fertile loam", temperature: "15–35°C", water: "1500–2000 mm/year", sunlight: "6–8 h/day", attackers: "Sigatoka leaf spot, bunchy top, banana aphid", growingTechnique: "Tissue culture; sucker planting", nutrition: { calories: "~89 kcal", protein: "~1.1 g", carbohydrates: "~23 g", fibre: "~2.6 g", fat: "~0.3 g", micronutrients: "Potassium, vitamin B6, vitamin C", gi: "Low-Medium", benefits: "Energy-dense snack; high potassium", processing: "Minimal; drying, pulp" } },
+  { name: "Mango", type: "food", states: "Uttar Pradesh, Andhra Pradesh, Karnataka, Maharashtra, Bihar", season: "Summer (perennial tree)", soil: "Well-drained loam", temperature: "20–35°C", water: "800–1200 mm/year", sunlight: "7–9 h/day", attackers: "Mango hoppers, mealybug, fruit fly, anthracnose", growingTechnique: "Grafting; pruning", nutrition: { calories: "~60 kcal", protein: "~0.8 g", carbohydrates: "~15 g", fibre: "~1.6 g", fat: "~0.4 g", micronutrients: "Vitamin A, vitamin C", gi: "Low", benefits: "Vitamin A/C source; fruit of high commercial value", processing: "Pulp, pickle, dried" } },
+  { name: "Coconut", type: "food", states: "Kerala, Tamil Nadu, Karnataka, Andhra Pradesh", season: "Perennial", soil: "Sandy loam / coastal alluvial", temperature: "25–32°C", water: "1500–2500 mm/year", sunlight: "7–9 h/day", attackers: "Rhinoceros beetle, leaf-eating caterpillar", growingTechnique: "Seedling planting; intercropping", nutrition: { calories: "~354 kcal (kernel)", protein: "~3.3 g", carbohydrates: "~15 g", fibre: "~9 g", fat: "~33 g", micronutrients: "Iron, manganese, copper", gi: "Low", benefits: "Oil, water, kernel; multi-purpose tree", processing: "Copra, oil extraction" } },
+  { name: "Tea", type: "non-food", states: "Assam, West Bengal, Tamil Nadu, Kerala", season: "Perennial (year-round plucking)", soil: "Acidic loam", temperature: "18–30°C", water: "1500–3000 mm/year", sunlight: "4–6 h/day", attackers: "Red spider mite, blister blight", growingTechnique: "Pruning; vegetative propagation", nutrition: { calories: "~1 kcal (brewed)", protein: "N/A", carbohydrates: "N/A", fibre: "N/A", fat: "N/A", micronutrients: "Polyphenols, caffeine", gi: "N/A", benefits: "Antioxidant beverage; high-value plantation", processing: "Withering, rolling, fermenting, drying" } },
+  { name: "Coffee", type: "non-food", states: "Karnataka, Kerala, Tamil Nadu", season: "Perennial", soil: "Loamy / slightly acidic", temperature: "15–28°C", water: "1500–2500 mm/year", sunlight: "3–5 h/day (shade-grown)", attackers: "Coffee berry borer, leaf rust", growingTechnique: "Shade-grown under trees; pruning", nutrition: { calories: "~1 kcal (brewed)", protein: "N/A", carbohydrates: "N/A", fibre: "N/A", fat: "N/A", micronutrients: "Caffeine, antioxidants", gi: "N/A", benefits: "Caffeine beverage; high-value export", processing: "Pulping, drying, roasting" } },
+  { name: "Ragi (Finger Millet)", type: "food", states: "Karnataka, Tamil Nadu, Andhra Pradesh, Odisha", season: "Kharif", soil: "Well-drained red loam", temperature: "20–30°C", water: "400–600 mm/crop", sunlight: "6–8 h/day", attackers: "Blast, stem borer", growingTechnique: "Direct sowing; transplanting", nutrition: { calories: "~336 kcal", protein: "~7 g", carbohydrates: "~72 g", fibre: "~3.5 g", fat: "~1.3 g", micronutrients: "Calcium, iron, potassium", gi: "Low", benefits: "High-calcium grain for gluten-free diets", processing: "Malting, milling" } },
+  { name: "Bajra (Pearl Millet)", type: "food", states: "Rajasthan, Maharashtra, Gujarat, Uttar Pradesh, Haryana", season: "Kharif", soil: "Sandy / well-drained", temperature: "25–35°C", water: "350–500 mm/crop", sunlight: "6–8 h/day", attackers: "Downy mildew, shoot fly", growingTechnique: "Direct sowing", nutrition: { calories: "~348 kcal", protein: "~11 g", carbohydrates: "~67 g", fibre: "~8 g", fat: "~5 g", micronutrients: "Iron, zinc", gi: "Low", benefits: "Drought-tolerant staple; iron-rich", processing: "Dehulling, milling" } },
+  { name: "Jowar (Sorghum)", type: "food", states: "Maharashtra, Karnataka, Telangana, Andhra Pradesh", season: "Kharif & Rabi", soil: "Well-drained loam", temperature: "25–35°C", water: "400–600 mm/crop", sunlight: "6–8 h/day", attackers: "Shoot fly, stem borer, grain mold", growingTechnique: "Direct sowing", nutrition: { calories: "~329 kcal", protein: "~11 g", carbohydrates: "~72 g", fibre: "~6 g", fat: "~3 g", micronutrients: "B vitamins, iron, magnesium", gi: "Low", benefits: "Drought-tolerant staple", processing: "Milling, fermentation" } },
+  { name: "Chickpea (Chana)", type: "food", states: "Rajasthan, Madhya Pradesh, Uttar Pradesh, Maharashtra, Karnataka", season: "Rabi", soil: "Sandy loam / well-drained", temperature: "15–25°C", water: "250–350 mm/crop", sunlight: "6–8 h/day", attackers: "Pod borer, wilt, root rot", growingTechnique: "Direct sowing; nitrogen-fixing", nutrition: { calories: "~364 kcal", protein: "~19 g", carbohydrates: "~61 g", fibre: "~17 g", fat: "~6 g", micronutrients: "Iron, folate, manganese", gi: "Low", benefits: "Major pulse protein source", processing: "Dehulling (chana dal)" } },
+  { name: "Mustard", type: "food", states: "Rajasthan, Uttar Pradesh, Madhya Pradesh, Haryana, Punjab", season: "Rabi", soil: "Loam / sandy loam", temperature: "15–25°C", water: "300–450 mm/crop", sunlight: "6–8 h/day", attackers: "Aphids, white rust", growingTechnique: "Direct sowing", nutrition: { calories: "~508 kcal", protein: "~25 g", carbohydrates: "~28 g", fibre: "N/A", fat: "~36 g", micronutrients: "Selenium, omega-3 ALA", gi: "N/A (oilseed)", benefits: "Edible oil and condiment", processing: "Oil extraction" } },
+  { name: "Soybean", type: "food", states: "Madhya Pradesh, Maharashtra, Rajasthan, Karnataka", season: "Kharif", soil: "Loam / well-drained", temperature: "20–30°C", water: "500–700 mm/crop", sunlight: "6–8 h/day", attackers: "Yellow mosaic virus, stem fly", growingTechnique: "Direct sowing; nitrogen-fixing", nutrition: { calories: "~446 kcal", protein: "~36 g", carbohydrates: "~30 g", fibre: "~10 g", fat: "~20 g", micronutrients: "Iron, calcium, B vitamins", gi: "Low", benefits: "Complete plant protein; oil source", processing: "Oil extraction, soy flour" } },
+  { name: "Onion", type: "food", states: "Maharashtra, Karnataka, Madhya Pradesh, Gujarat, Telangana", season: "Kharif & Rabi", soil: "Sandy loam / well-drained", temperature: "15–25°C", water: "350–500 mm/crop", sunlight: "6–8 h/day", attackers: "Thrips, purple blotch", growingTechnique: "Transplanting seedlings", nutrition: { calories: "~40 kcal", protein: "~1.1 g", carbohydrates: "~9 g", fibre: "~1.7 g", fat: "~0.1 g", micronutrients: "Vitamin C, quercetin", gi: "Low", benefits: "Antioxidant-rich bulb vegetable", processing: "Dehydration, paste" } },
+  { name: "Jute", type: "non-food", states: "West Bengal, Bihar, Assam, Odisha", season: "Kharif", soil: "Alluvial / loamy", temperature: "24–35°C", water: "1500–2500 mm/crop", sunlight: "6–8 h/day", attackers: "Jute semilooper, mite, root rot", growingTechnique: "Direct sowing; retting for fibre", nutrition: null },
+  { name: "Turmeric", type: "food", states: "Tamil Nadu, Andhra Pradesh, Telangana, Odisha", season: "Kharif", soil: "Well-drained loam", temperature: "20–30°C", water: "1000–2000 mm/crop", sunlight: "4–6 h/day", attackers: "Rhizome rot, leaf spot", growingTechnique: "Rhizome planting", nutrition: { calories: "~354 kcal", protein: "~8 g", carbohydrates: "~67 g", fibre: "N/A", fat: "~10 g", micronutrients: "Curcumin, iron, manganese", gi: "Low", benefits: "Anti-inflammatory; medicinal spice", processing: "Boiling, drying, grinding" } },
+  { name: "Cardamom", type: "non-food", states: "Kerala, Karnataka, Tamil Nadu", season: "Perennial", soil: "Loamy / forest soil", temperature: "15–30°C", water: "2000–3000 mm/year", sunlight: "Shade-grown", attackers: "Cardamom thrips, capsule borer", growingTechnique: "Shade-grown under trees", nutrition: { calories: "~311 kcal", protein: "~11 g", carbohydrates: "~68 g", fibre: "N/A", fat: "~7 g", micronutrients: "Iron, zinc", gi: "N/A", benefits: "High-value spice; carminative", processing: "Curing, drying" } }
+];
+
+const STORAGE = [
+  { factor: "Temperature", household: "Cool, dry room, ideally <25°C", hotelRestaurant: "Cool, dry storeroom", supplyVendor: "~15–25°C; temperature-controlled where possible" },
+  { factor: "Humidity", household: "<60% RH", hotelRestaurant: "<60% RH", supplyVendor: "Preferably <65% RH" },
+  { factor: "Container", household: "Airtight food-grade container", hotelRestaurant: "Sealed food-grade bins", supplyVendor: "Food-grade bags/silos with moisture control" },
+  { factor: "Light", household: "Keep away from sunlight", hotelRestaurant: "Dark/dry store", supplyVendor: "Protect from direct sunlight" },
+  { factor: "Ventilation", household: "Dry environment", hotelRestaurant: "Good ventilation", supplyVendor: "Aerated warehouse" },
+  { factor: "Expected storage", household: "6–12 months+ if dry", hotelRestaurant: "6–12 months+", supplyVendor: "12+ months when properly dried" },
+  { factor: "Main wastage risk", household: "Moisture, insects", hotelRestaurant: "Moisture, pests", supplyVendor: "Weevils, moisture, fungal growth" },
+  { factor: "Best practice", household: "Keep container sealed", hotelRestaurant: "FIFO rotation", supplyVendor: "Dry grain before storage + pest monitoring" }
+];
+
+const TOOLTIPS = {
+  undernourishment: "The proportion of the population whose habitual food intake is insufficient to provide the dietary energy required to maintain a healthy, active life.",
+  foodInsecurity: "Moderate + severe food insecurity reflects limited access to food at the population level, based on the Food Insecurity Experience Scale (FIES).",
+  severeFoodInsecurity: "Severe food insecurity reflects households where food is often reduced or skipped; people have likely run out of food and gone hungry.",
+  ghi: "Global Hunger Index – a composite indicator combining undernourishment, child stunting, child wasting, and child mortality. Lower is better.",
+  foodLoss: "Food lost along the supply chain from production up to (but not including) retail.",
+  foodWaste: "Food discarded at retail, food service, and household levels.",
+  foodSurplus: "Food available in excess of nutritional requirements or essential non-food uses; an approximation of potential redistribution surplus.",
+  peopleNeedingFood: "Approximate count of people facing hunger or severe food insecurity requiring food access interventions."
+};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const state = {
+  view: 'home',
+  theme: localStorage.getItem('sdg2-theme') || 'light',
+  comparisonSlots: ['India', 'China', 'United States', 'Nigeria'],
+  comparisonInput: ['', '', '', ''],
+  autocompleteOpen: [false, false, false, false],
+  currentCountryDetail: null,
+  currentCropDetail: null,
+  stateSearch: '',
+  cropFilters: { state: '', season: '', type: '', water: '' }
+};
+
+let activeCharts = [];
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+function normalizeCountryName(s) {
+  if (!s) return '';
+  s = s.trim().toLowerCase();
+  if (s === 'usa' || s === 'united states' || s === 'united states of america' || s === 'u.s.' || s === 'us') return 'United States';
+  return s.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+function normalizeText(s) { return s ? s.trim().toLowerCase() : ''; }
+function findCountry(name) {
+  if (!name) return null;
+  const norm = normalizeCountryName(name).toLowerCase();
+  return COUNTRIES.find(c => c.name.toLowerCase() === norm);
+}
+function getUniqueStates() {
+  const states = new Set();
+  CROPS.forEach(crop => {
+    if (crop.states) crop.states.split(',').forEach(s => { const t = s.trim(); if (t) states.add(t); });
+  });
+  return Array.from(states).sort();
+}
+function filterCrops(filters) {
+  return CROPS.filter(c => {
+    if (filters.state && !(c.states && c.states.toLowerCase().includes(filters.state.toLowerCase()))) return false;
+    if (filters.season && !(c.season && c.season.toLowerCase().includes(filters.season.toLowerCase()))) return false;
+    if (filters.type && c.type !== filters.type) return false;
+    if (filters.water) {
+      if (!c.water) return false;
+      const m = c.water.match(/(\d+)\s*[-–]\s*(\d+)/) || c.water.match(/(\d+)/);
+      if (m) {
+        const low = parseInt(m[1]); const high = m[2] ? parseInt(m[2]) : low;
+        if (filters.water === 'low' && high >= 600) return false;
+        if (filters.water === 'medium' && (high < 600 || low > 900)) return false;
+        if (filters.water === 'high' && high < 900) return false;
+      } else return false;
+    }
+    return true;
+  });
+}
+function parseNumericValue(value) {
+  if (!value) return null;
+  if (value.toLowerCase().includes('not ranked')) return null;
+  if (value.toLowerCase().includes('low')) return null;
+  const rangeMatch = value.match(/([\d.,]+)\s*[–-]\s*([\d.,]+)/);
+  if (rangeMatch) {
+    const low = parseFloat(rangeMatch[1].replace(/,/g, ''));
+    const high = parseFloat(rangeMatch[2].replace(/,/g, ''));
+    return { type: 'range', low, high, avg: (low + high) / 2 };
+  }
+  const ltMatch = value.match(/<\s*([\d.,]+)/);
+  if (ltMatch) return { type: 'less-than', value: parseFloat(ltMatch[1].replace(/,/g, '')) };
+  const numMatch = value.match(/([\d.,]+)/);
+  if (numMatch) return { type: 'exact', value: parseFloat(numMatch[1].replace(/,/g, '')) };
+  return null;
+}
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* =========================================================
+   CHART DATA LABEL PLUGIN  (draws original text above each bar)
+   ========================================================= */
+const barDataLabelsPlugin = {
+  id: 'barDataLabels',
+  afterDatasetsDraw(chart) {
+    const ctx = chart.ctx;
+    const meta = chart.getDatasetMeta(0);
+    if (!meta || !meta.data || !meta.data.length) return;
+    const dataPoints = chart.$dataPoints;
+    if (!dataPoints || !dataPoints.length) return;
+    const isDark = chart.$isDark || false;
+    const labelColor = isDark ? '#E8F0E4' : '#1A2E1A';
+
+    ctx.save();
+    ctx.font = '600 10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillStyle = labelColor;
+
+    meta.data.forEach((bar, i) => {
+      const dp = dataPoints[i];
+      if (!dp || !dp.original || dp.y == null) return;
+      let value = dp.original;
+      if (value.length > 22) value = value.substring(0, 20) + '…';
+      ctx.fillText(value, bar.x, bar.y - 6);
+    });
+    ctx.restore();
+  }
+};
+Chart.register(barDataLabelsPlugin);
+
+/* =========================================================
+   CHART OPTIONS BUILDER
+   ========================================================= */
+function buildChartOptions(isDark, dataPoints) {
+  const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  const textColor = isDark ? '#B8C8B8' : '#3C4B3C';
+
+  let yMax = null;
+  dataPoints.forEach(d => {
+    if (d.y == null) return;
+    yMax = Math.max(yMax || 0, d.y);
+  });
+  const paddedMax = yMax ? yMax * 1.30 : undefined;
+
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 600, easing: 'easeOutQuart' },
+    layout: { padding: { top: 40, right: 16, bottom: 4, left: 8 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: isDark ? '#162017' : '#FFFFFF',
+        borderColor: isDark ? '#2A3A2C' : '#E5E8E3',
+        borderWidth: 1,
+        titleColor: isDark ? '#E8F0E4' : '#1A2E1A',
+        bodyColor: isDark ? '#94A894' : '#5C6B5C',
+        displayColors: false,
+        padding: 12,
+        cornerRadius: 8,
+        callbacks: {
+          label: function(ctx) {
+            const dp = dataPoints[ctx.dataIndex];
+            return dp.original || 'Data not available in current dataset';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: textColor,
+          font: { size: 11, family: 'Inter', weight: '500' },
+          maxRotation: 0,
+          autoSkip: false
+        }
+      },
+      y: {
+        grid: { color: gridColor, drawBorder: false },
+        ticks: {
+          color: textColor,
+          font: { size: 10, family: 'Inter' },
+          padding: 6,
+          maxTicksLimit: 6,
+          callback: function(value) {
+            if (value >= 1000) return (value / 1000).toFixed(1) + 'k';
+            return value;
+          }
+        },
+        beginAtZero: true,
+        grace: '15%',
+        suggestedMax: paddedMax
+      }
+    }
+  };
+}
+
+/* =========================================================
+   CHART DATA POINTS BUILDER  (uses AVERAGE for ranges → solid bars)
+   ========================================================= */
+function buildDataPoints(countries, field) {
+  return countries.map(c => {
+    const parsed = parseNumericValue(c[field]);
+    if (!parsed) return { y: null, original: c[field], label: c.name, flag: c.flag };
+    let barValue;
+    if (parsed.type === 'range') barValue = parsed.avg;
+    else if (parsed.type === 'less-than') barValue = parsed.value;
+    else barValue = parsed.value;
+    return { y: barValue, original: c[field], label: c.name, flag: c.flag };
+  });
+}
+
+function makeBarChart(canvasId, countries, field, isDark, palette) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+  const ctx = canvas.getContext('2d');
+  const dataPoints = buildDataPoints(countries, field);
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: dataPoints.map(d => `${d.flag} ${d.label}`),
+      datasets: [{
+        data: dataPoints.map(d => d.y),
+        backgroundColor: countries.map((_, i) => palette[i % palette.length] + (isDark ? 'dd' : 'cc')),
+        borderColor: countries.map((_, i) => palette[i % palette.length]),
+        borderWidth: 1.5,
+        borderRadius: 6,
+        maxBarThickness: 64
+      }]
+    },
+    options: buildChartOptions(isDark, dataPoints)
+  });
+  chart.$dataPoints = dataPoints;
+  chart.$isDark = isDark;
+  return chart;
+}
+/* =========================================================
+   ICONS
+   ========================================================= */
+const ICONS = {
+  home: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  compare: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>`,
+  crops: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c1.25-.987 2.27-1.975 3.9-2 2.5-.025 3.5 2 6 2s3.5-2 6-2c1.625.025 2.65 1.013 3.9 2"/><path d="M12 2v6"/><path d="M12 16l4-4l4 4"/><path d="M12 16l-4-4l-4 4"/></svg>`,
+  storage: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`,
+  surplus: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l3-3 4 4 6-6"/></svg>`,
+  dashboard: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>`,
+  methodology: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+  sun: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  moon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+  search: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  menu: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
+  arrowRight: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  risk: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`
+};
+
+/* =========================================================
+   HUNGER RISK INDICATOR  (Low / Medium / High)
+   ========================================================= */
+const RISK_PRESETS = {
+  "India":         { inflation: 6.5, drought: 5, conflict: 2, undernourishment: 12.0 },
+  "China":         { inflation: 0.5, drought: 3, conflict: 1, undernourishment: 2.5 },
+  "United States": { inflation: 2.5, drought: 4, conflict: 1, undernourishment: 2.5 },
+  "Nigeria":       { inflation: 28,  drought: 7, conflict: 4, undernourishment: 19.9 },
+  "Bangladesh":    { inflation: 12.92, drought: 3, conflict: 2, undernourishment: 11.9 }
+};
+
+/*
+ * Independent Hunger Risk Score (0–100)
+ * Maximum contribution:
+ *   Food inflation       25 points
+ *   Drought severity     20 points
+ *   Conflict intensity   15 points
+ *   Undernourishment     40 points
+ *
+ * Normalization:
+ *   Inflation:          MIN(inflation / 20, 1) × 25
+ *   Drought:            ((drought - 1) / 9) × 20
+ *   Conflict:           ((conflict - 1) / 4) × 15
+ *   Undernourishment:  MIN(undernourishment / 20, 1) × 40
+ */
+const RISK_LEVELS = {
+  low:      { label: 'LOW HUNGER RISK',       emoji: '🟢', bar: 'var(--primary)', glow: 'var(--primary-glow)',              text: 'var(--primary)' },
+  moderate: { label: 'MODERATE HUNGER RISK',  emoji: '🟡', bar: 'var(--accent)',  glow: 'rgba(232, 165, 58, 0.15)',         text: 'var(--accent)' },
+  high:     { label: 'HIGH HUNGER RISK',      emoji: '🟠', bar: 'var(--accent)',  glow: 'rgba(232, 165, 58, 0.22)',         text: 'var(--accent)' },
+  veryHigh: { label: 'VERY HIGH HUNGER RISK', emoji: '🔴', bar: 'var(--warning)', glow: 'rgba(216, 90, 58, 0.15)',         text: 'var(--warning)' },
+  extreme:  { label: 'EXTREME HUNGER RISK',   emoji: '🔴', bar: 'var(--warning)', glow: 'rgba(216, 90, 58, 0.25)',         text: 'var(--warning)' }
+};
+
+const riskLabelStyle = "display:block; font-family:'Sora',sans-serif; font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;";
+
+function renderRiskPredictor() {
+  const presetBtns = Object.keys(RISK_PRESETS).map(name => {
+    const c = findCountry(name);
+    return `<button type="button" class="btn-secondary" onclick="fillRiskPreset('${name}')" style="padding:7px 12px; font-size:12px;">${c ? c.flag + ' ' : ''}${name}</button>`;
+  }).join('');
+
+  return `
+  <div class="fade-in">
+    ${renderTopBar('Hunger Risk Indicator', 'Predict a country\'s hunger risk from food inflation, drought severity, conflict intensity and undernourishment. Classified as Low, Moderate, High, Very High or Extreme risk.')}
+
+    <div class="risk-grid" style="align-items: start;">
+
+      <div class="card" style="padding: 26px;">
+        <h2 style="font-size: 17px; margin-bottom: 4px;">Input Factors</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin: 0 0 18px 0;">Enter values manually, or load a preset country.</p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px;">
+          ${presetBtns}
+        </div>
+
+        <form onsubmit="event.preventDefault(); calculateHungerRisk();">
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div>
+              <label style="${riskLabelStyle}">Country Name</label>
+              <input id="risk-country" class="input" type="text" placeholder="e.g., Sudan, Brazil, India">
+            </div>
+            <div>
+              <label style="${riskLabelStyle}">Food Inflation Rate (%)</label>
+              <input id="risk-inflation" class="input" type="number" min="0" step="0.1" placeholder="e.g., 12">
+            </div>
+            <div>
+              <label style="${riskLabelStyle}">Drought Severity Index (1–10)</label>
+              <input id="risk-drought" class="input" type="number" min="1" max="10" step="1" placeholder="1 = Normal, 10 = Severe">
+            </div>
+            <div>
+              <label style="${riskLabelStyle}">Conflict Intensity (1–5)</label>
+              <input id="risk-conflict" class="input" type="number" min="1" max="5" step="1" placeholder="1 = Peaceful, 5 = Active War">
+            </div>
+            <div>
+              <label style="${riskLabelStyle}">Current Undernourishment Rate (%)</label>
+              <input id="risk-undernourishment" class="input" type="number" min="0" max="100" step="0.1" placeholder="e.g., 18">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:22px;">
+            Predict Hunger Risk ${ICONS.arrowRight}
+          </button>
+        </form>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card" style="padding: 26px;">
+          <h2 style="font-size: 17px; margin-bottom: 18px;">Prediction Result</h2>
+          <div id="risk-result">
+            <div style="text-align:center; padding: 40px 16px; color: var(--text-subtle); font-size: 14px;">
+              <div style="font-size: 36px; margin-bottom: 10px;">📊</div>
+              Enter your factors and click <strong>Predict Hunger Risk</strong> to see the classification.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 20px 26px;">
+          <h3 style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;">Risk Scale</h3>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="pill pill-green">0–19 · Low</span>
+            <span class="pill pill-amber">20–39 · Moderate</span>
+            <span class="pill pill-amber">40–59 · High</span>
+            <span class="pill pill-red">60–79 · Very High</span>
+            <span class="pill pill-red">80–100 · Extreme</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="methodology-note" style="margin-top: 24px;">
+      <strong>How the score works:</strong> This is an independent 0–100 Hunger Risk Score. Food inflation contributes up to 25 points, drought up to 20, conflict up to 15, and undernourishment up to 40. Inflation is capped at 20%, drought uses the 1–10 scale, conflict uses the 1–5 scale, and undernourishment is capped at 20% for scoring. Risk bands: 0–19 Low, 20–39 Moderate, 40–59 High, 60–79 Very High, 80–100 Extreme.
+    </div>
+  </div>`;
+}
+
+function calculateHungerRisk() {
+  const country = (document.getElementById('risk-country').value || '').trim() || 'Selected Country';
+  let inflation = parseFloat(document.getElementById('risk-inflation').value) || 0;
+  let drought = parseFloat(document.getElementById('risk-drought').value) || 1;
+  let conflict = parseFloat(document.getElementById('risk-conflict').value) || 1;
+  let undernourishment = parseFloat(document.getElementById('risk-undernourishment').value) || 0;
+
+  inflation = Math.max(0, inflation);
+  drought = Math.min(10, Math.max(1, drought));
+  conflict = Math.min(5, Math.max(1, conflict));
+  undernourishment = Math.min(100, Math.max(0, undernourishment));
+
+  // Normalize each factor to its maximum contribution.
+  const inflationPoints = Math.min(inflation / 20, 1) * 25;
+  const droughtPoints = ((drought - 1) / 9) * 20;
+  const conflictPoints = ((conflict - 1) / 4) * 15;
+  const undernourishmentPoints = Math.min(undernourishment / 20, 1) * 40;
+
+  // Final score is always constrained to 0–100.
+  const score = Math.min(
+    100,
+    Math.max(0, inflationPoints + droughtPoints + conflictPoints + undernourishmentPoints)
+  );
+
+  let level;
+  if (score < 20) level = RISK_LEVELS.low;
+  else if (score < 40) level = RISK_LEVELS.moderate;
+  else if (score < 60) level = RISK_LEVELS.high;
+  else if (score < 80) level = RISK_LEVELS.veryHigh;
+  else level = RISK_LEVELS.extreme;
+
+  const meterWidth = Math.min(100, score);
+
+  const breakdown = [
+    { factor: 'Food Inflation',     weight: 'max 25 pts', points: inflationPoints,       icon: '📈' },
+    { factor: 'Drought Severity',   weight: 'max 20 pts', points: droughtPoints,         icon: '☀️' },
+    { factor: 'Conflict Intensity', weight: 'max 15 pts', points: conflictPoints,        icon: '⚔️' },
+    { factor: 'Undernourishment',   weight: 'max 40 pts', points: undernourishmentPoints, icon: '🍽️' }
+  ];
+
+  document.getElementById('risk-result').innerHTML = `
+    <div style="text-align:center; padding: 18px 14px; border-radius: 12px; background: ${level.glow}; border: 1px solid ${level.bar};">
+      <div style="font-size: 30px; line-height: 1;">${level.emoji}</div>
+      <div style="font-family:'Sora',sans-serif; font-size: 15px; font-weight: 700; color: ${level.text}; margin-top: 8px; letter-spacing: 0.04em;">${escapeHtml(country).toUpperCase()}</div>
+      <div style="font-family:'Sora',sans-serif; font-size: 20px; font-weight: 800; color: ${level.text}; margin-top: 6px;">${level.label}</div>
+      <div style="font-family:'Sora',sans-serif; font-size: 34px; font-weight: 800; color: ${level.text}; margin-top: 8px;">${score.toFixed(1)}<span style="font-size:16px; font-weight:600;"> / 100</span></div>
+      <div style="height:10px; background:var(--bg-tertiary); border-radius:999px; overflow:hidden; margin-top:14px;">
+        <div style="height:100%; width:${meterWidth}%; background:${level.bar}; border-radius:999px; transition:width .4s ease;"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      ${breakdown.map(item => `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-size:13px; font-weight:600;">${item.icon} ${item.factor}</div>
+            <div style="font-size:11px; color:var(--text-subtle);">${item.weight}</div>
+          </div>
+          <div style="font-family:'Sora',sans-serif; font-size:14px; font-weight:700;">${item.points.toFixed(2)} pts</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function fillRiskPreset(name) {
+  const p = RISK_PRESETS[name];
+  if (!p) return;
+  document.getElementById('risk-country').value = name;
+  document.getElementById('risk-inflation').value = p.inflation;
+  document.getElementById('risk-drought').value = p.drought;
+  document.getElementById('risk-conflict').value = p.conflict;
+  document.getElementById('risk-undernourishment').value = p.undernourishment;
+  calculateHungerRisk();
+}
+
+/* =========================================================
+   ROUTING & RENDERING
+   ========================================================= */
+function navigate(view) { state.view = view; render(); window.scrollTo(0, 0); }
+function destroyCharts() { activeCharts.forEach(c => { try { c.destroy(); } catch(e){} }); activeCharts = []; }
+
+function render() {
+  destroyCharts();
+  document.documentElement.className = state.theme;
+  const app = document.getElementById('app');
+  let content = '';
+  content += renderSidebar();
+  content += renderMobileNav();
+  content += `<main class="main-content" style="margin-left: 264px; padding: 32px 32px 60px; min-height: 100vh;">`;
+  if (state.view === 'home') content += renderHome();
+  else if (state.view === 'comparison') content += renderComparison();
+  else if (state.view === 'risk') content += renderRiskPredictor();
+  else if (state.view === 'crop-intelligence') content += renderCropIntelligence();
+  else if (state.view === 'crop-detail') content += renderCropDetail();
+  else if (state.view === 'storage') content += renderStorage();
+  else if (state.view === 'surplus') content += renderSurplus();
+  else if (state.view === 'dashboard') content += renderDashboard();
+  else if (state.view === 'methodology') content += renderMethodology();
+  else if (state.view === 'country-detail') content += renderCountryDetail();
+  content += `</main>`;
+  app.innerHTML = content;
+  attachGlobalListeners();
+  setTimeout(() => {
+    if (state.view === 'comparison') initComparisonCharts();
+    else if (state.view === 'dashboard') initDashboardCharts();
+    else if (state.view === 'surplus') initSurplusCharts();
+  }, 50);
+}
+
+
+function renderSidebar() {
+  const navItems = [
+    { id: 'home', label: 'Home', icon: ICONS.home },
+    { id: 'dashboard', label: 'Dashboard', icon: ICONS.dashboard },
+    { id: 'comparison', label: 'Country Comparison', icon: ICONS.compare },
+    { id: 'risk', label: 'Hunger Risk Indicator', icon: ICONS.risk },
+    { id: 'crop-intelligence', label: 'India Crop Intelligence', icon: ICONS.crops },
+    { id: 'storage', label: 'Food Storage', icon: ICONS.storage },
+    { id: 'surplus', label: 'Food Surplus & Hunger', icon: ICONS.surplus },
+    { id: 'methodology', label: 'Data & Methodology', icon: ICONS.methodology }
+  ];
+  return `
+    <aside class="desktop-sidebar" style="position: fixed; top: 0; left: 0; bottom: 0; width: 264px; background-color: var(--bg-elevated); border-right: 1px solid var(--border); padding: 20px 16px; z-index: 40; overflow-y: auto;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 6px 8px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+        <div class="sidebar-logo">2</div>
+        <div>
+          <div style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px; line-height: 1.2;">SDG 2</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Zero Hunger Platform</div>
+        </div>
+      </div>
+      <nav style="display: flex; flex-direction: column; gap: 4px;">
+        ${navItems.map(item => `<a class="nav-item ${state.view === item.id ? 'active' : ''}" data-view="${item.id}">${item.icon}<span>${item.label}</span></a>`).join('')}
+      </nav>
+      <div style="margin-top: 28px; padding: 16px; background-color: var(--bg-secondary); border-radius: 12px; font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;"><span class="live-dot"></span><span style="font-weight: 600; color: var(--text);">Project Dataset</span></div>
+        ${COUNTRIES.length} countries · ${CROPS.length} crops loaded
+      </div>
+    </aside>`;
+}
+
+function renderMobileNav() {
+  const navItems = [
+    { id: 'home', label: 'Home', icon: ICONS.home },
+    { id: 'comparison', label: 'Compare', icon: ICONS.compare },
+    { id: 'risk', label: 'Risk', icon: ICONS.risk },
+    { id: 'crop-intelligence', label: 'Crops', icon: ICONS.crops },
+    { id: 'storage', label: 'Storage', icon: ICONS.storage },
+    { id: 'surplus', label: 'Surplus', icon: ICONS.surplus },
+    { id: 'dashboard', label: 'Dash', icon: ICONS.dashboard },
+    { id: 'methodology', label: 'Data', icon: ICONS.methodology }
+  ];
+  return `
+    <header class="mobile-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 40; background-color: var(--bg-elevated); border-bottom: 1px solid var(--border); padding: 12px 16px; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="sidebar-logo" style="width: 30px; height: 30px; font-size: 13px;">2</div>
+        <span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px;">SDG 2</span>
+      </div>
+      <button id="mobile-menu-toggle" class="theme-toggle" aria-label="Menu">${ICONS.menu}</button>
+    </header>
+    <div id="mobile-menu" style="display: none; position: fixed; top: 56px; left: 0; right: 0; background-color: var(--bg-elevated); border-bottom: 1px solid var(--border); padding: 12px; z-index: 39; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        ${navItems.map(item => `<a class="nav-item ${state.view === item.id ? 'active' : ''}" data-view="${item.id}">${item.icon}<span>${item.label}</span></a>`).join('')}
+      </div>
+    </div>`;
+}
+function renderTopBar(title, subtitle) {
+  return `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h1 style="font-size: 28px; font-weight: 700; line-height: 1.15;">${title}</h1>
+        ${subtitle ? `<p style="color: var(--text-muted); margin-top: 6px; font-size: 14px; max-width: 720px;">${subtitle}</p>` : ''}
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">${state.theme === 'light' ? ICONS.moon : ICONS.sun}</button>
+    </div>`;
+}
+
+/* =========================================================
+   HOME PAGE
+   ========================================================= */
+function renderHome() {
+  return `
+    <div class="fade-in">
+      <section class="hero-bg" style="border-radius: 24px; padding: 56px 48px; margin-bottom: 32px; position: relative;">
+        <div style="position: relative; z-index: 2;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); border-radiu
+            <span style="width: 6px; height: 6px; background: #88D977; border-radius: 50%; display: inline-block;"></span>UN SDG 2 · GLOBAL DATA INTELLIGENCE
+          </div>
+          <h1 style="color: white; font-size: clamp(36px, 6vw, 56px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; max-width: 900px;">SDG 2 – Zero Hunger</h1>
+          <p style="color: rgba(255,255,255,0.92); font-size: 18px; max-width: 760px; line-height: 1.55; margin-bottom: 32px;">Global Food Security &amp; Hunger Risk Intelligence Platform</p>
+          <p style="color: rgba(255,255,255,0.78); font-size: 14px; max-width: 720px; line-height: 1.6; margin-bottom: 32px;">Analyze food security indicators, agricultural production, crop requirements, food loss, food waste and hunger-related indicators to understand food security risks across countries and regions.</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn-primary" data-view="comparison" style="background: white; color: #1F4A2E;">${ICONS.compare} Compare Countries</button>
+            <button class="btn-secondary" data-view="crop-intelligence" style="background: rgba(255,255,255,0.12); color: white; border-color: rgba(255,255,255,0.25); backdrop-filter: blur(8px);">${ICONS.crops} Explore Indian Crops</button>
+            <button class="btn-secondary" data-view="storage" style="background: rgba(255,255,255,0.12); color: white; border-color: rgba(255,255,255,0.25); backdrop-filter: blur(8px);">${ICONS.storage} Storage Guide</button>
+            <button class="btn-secondary" data-view="surplus" style="background: rgba(255,255,255,0.12); color: white; border-color: rgba(255,255,255,0.25); backdrop-filter: blur(8px);">${ICONS.surplus} Food Surplus Analysis</button>
+          </div>
+        </div>
+      </section>
+      <div style="margin-bottom: 32px;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">Core Intelligence Modules</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Four interconnected workspaces covering the food system continuum from production to people in need.</p>
+        <div class="bento-grid">
+          <div class="module-card" data-view="comparison" style="grid-column: span 6;"><div class="module-icon">🌍</div><h3 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Global Country Comparison</h3><p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">Side-by-side comparison of up to four countries across 11 food-security indicators with dynamic charts.</p><div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;"><span class="pill pill-green">4 slots</span><span class="pill pill-green">11 indicators</span><span class="pill pill-green">9 charts</span></div></div>
+          <div class="module-card" data-view="crop-intelligence" style="grid-column: span 6;"><div class="module-icon">🌾</div><h3 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">India Crop Intelligence</h3><p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">Search any Indian state to discover associated crops, growing requirements, and nutrition profiles.</p><div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;"><span class="pill pill-green">${CROPS.length} crops</span><span class="pill pill-green">${getUniqueStates().length} states</span><span class="pill pill-green">Filters</span></div></div>
+          <div class="module-card" data-view="storage" style="grid-column: span 6;"><div class="module-icon">📦</div><h3 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Food Storage &amp; Waste Management</h3><p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">Storage guidance across households, hotels/restaurants, and supply vendors with risk indicators.</p><div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;"><span class="pill pill-green">3 storage tiers</span><span class="pill pill-green">8 factors</span></div></div>
+          <div class="module-card" data-view="surplus" style="grid-column: span 6;"><div class="module-icon">🍚</div><h3 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Food Surplus &amp; Hunger Analysis</h3><p style="color: var(--text-muted); font-size: 13px; line-height: 1.55;">Visual flow from production through loss, waste, and surplus to redistribution and people in need.</p><div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;"><span class="pill pill-green">Food flow</span><span class="pill pill-green">Hunger risk profile</span></div></div>
+        </div>
+      </div>
+      <div class="card" style="padding: 28px; margin-bottom: 24px;">
+        <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Food System Pipeline</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">The platform follows the central concept of food systems intelligence:</p>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; font-weight: 600; font-family: 'Sora', sans-serif;">
+          ${['FARM', 'CROP', 'PRODUCTION', 'STORAGE', 'FOOD', 'SURPLUS', 'REDISTRIBUTION', 'PEOPLE IN NEED'].map((step, i, arr) => `<span style="padding: 8px 14px; background: var(--primary-glow); color: var(--primary); border-radius: 100px; white-space: nowrap;">${step}</span>${i < arr.length - 1 ? `<span style="color: var(--text-subtle);">${ICONS.arrowRight}</span>` : ''}`).join('')}
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        ${[{label:'Countries available',value:COUNTRIES.length},{label:'Crops in dataset',value:CROPS.length},{label:'Indian states covered',value:getUniqueStates().length},{label:'Storage factors',value:STORAGE.length}].map(s => `<div class="stat-card"><div style="font-family:'Sora',sans-serif;font-size:32px;font-weight:800;color:var(--primary);line-height:1;">${s.value}</div><div style="color:var(--text-muted);font-size:12px;margin-top:6px;font-weight:500;">${s.label}</div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* =========================================================
+   COUNTRY COMPARISON PAGE
+   ========================================================= */
+function renderComparison() {
+  const slotConfigs = state.comparisonSlots.map((name, i) => {
+    const country = findCountry(name);
+    const isDuplicate = name && state.comparisonSlots.filter(s => s && s.toLowerCase() === name.toLowerCase()).length > 1;
+    return { name, country, isDuplicate, index: i };
+  });
+  return `
+    ${renderTopBar('Global Country Comparison', 'Compare up to four countries across population, hunger, food security, and food-system indicators. Charts update dynamically.')}
+    <div class="fade-in">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 32px;" id="country-slots">
+        ${slotConfigs.map((slot, i) => renderCountrySlot(slot, i)).join('\n')}
+      </div>
+      ${slotConfigs.some(s => s.isDuplicate) ? `<div class="warning-note" style="margin-bottom: 20px;">Notice: A country is selected in more than one slot. Comparison is still allowed, but consider choosing a different country for richer insights.</div>` : ''}
+      ${renderComparisonTable(slotConfigs)}
+      <div class="section-divider"><h3>Dynamic Comparison Charts</h3></div>
+      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Bars use the midpoint of any range for height. The original supplied value (with ≈, &lt;, or range) is shown as a data label above each bar and in the tooltip.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px;" id="charts-grid">
+        ${renderChartCard('undernourishment-chart', 'Undernourishment %')}
+        ${renderChartCard('hunger-chart', 'People Affected by Hunger')}
+        ${renderChartCard('modsev-chart', 'Moderate + Severe Food Insecurity')}
+        ${renderChartCard('sev-chart', 'Severe Food Insecurity')}
+        ${renderChartCard('produced-chart', 'Food Produced')}
+        ${renderChartCard('lost-chart', 'Food Lost')}
+        ${renderChartCard('wasted-chart', 'Food Wasted')}
+        ${renderChartCard('surplus-chart', 'Food Surplus')}
+        ${renderChartCard('needing-chart', 'People Needing Food')}
+      </div>
+    </div>`;
+}
+
+function renderCountrySlot(slot, i) {
+  const { name, country, isDuplicate } = slot;
+  const inputVal = state.comparisonInput[i] !== '' ? state.comparisonInput[i] : (country ? country.name : '');
+  const showAutocomplete = state.autocompleteOpen[i] && inputVal.length > 0;
+  const matches = inputVal.length > 0 ? COUNTRIES.filter(c => c.name.toLowerCase().includes(inputVal.toLowerCase())).slice(0, 6) : [];
+  return `
+    <div class="country-slot ${country ? 'filled' : ''} ${isDuplicate ? 'duplicate' : ''}">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em;">SLOT ${i + 1}</span>
+        ${country ? `<span class="pill ${isDuplicate ? 'pill-amber' : 'pill-green'}">SELECTED</span>` : `<span class="pill pill-neutral">EMPTY</span>`}
+      </div>
+      <div style="position: relative;">
+        <input type="text" class="input country-search-input" data-slot="${i}" placeholder="Type a country..." value="${escapeHtml(inputVal)}" autocomplete="off" />
+        ${showAutocomplete ? `<div class="autocomplete-list">${matches.length > 0 ? matches.map(c => `<div class="autocomplete-item" data-country="${escapeHtml(c.name)}" data-slot="${i}"><span class="flag">${c.flag}</span><span>${escapeHtml(c.name)}</span></div>`).join('') : `<div style="padding: 12px 14px; color: var(--text-muted); font-size: 13px;">No matches in dataset.</div>`}</div>` : ''}
+      </div>
+      ${country ? `<div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;"><span style="font-size: 28px; line-height: 1;">${country.flag}</span><div><div style="font-weight: 700; font-size: 15px; font-family: 'Sora', sans-serif;">${escapeHtml(country.name)}</div><div style="font-size: 11px; color: var(--text-muted);">Code: ${country.code}</div></div></div><div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Pop: ${escapeHtml(country.population)} (${country.populationYear})</div><button class="btn-secondary" data-country-detail="${escapeHtml(country.name)}" style="margin-top: 10px; width: 100%; padding: 8px 12px; font-size: 12px; justify-content: center;">View Detail</button></div>` : name ? `<div style="margin-top: 12px; padding: 12px; background: rgba(216, 90, 58, 0.08); border-radius: 8px; font-size: 12px; color: var(--warning);">Country data not available in current dataset.</div>` : ''}
+    </div>`;
+}
+
+function renderChartCard(id, title) {
+  return `<div class="card" style="padding: 18px;"><div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px; font-family: 'Sora', sans-serif;">${title}</div><div class="chart-container"><canvas id="${id}"></canvas></div></div>`;
+}
+
+function renderComparisonTable(slots) {
+  const hasAny = slots.some(s => s.country);
+  if (!hasAny) return `<div class="card" style="padding: 40px; text-align: center; color: var(--text-muted);"><div style="font-size: 36px; margin-bottom: 12px;">🌍</div><div style="font-weight: 600; color: var(--text); margin-bottom: 6px;">No countries selected</div><div style="font-size: 13px;">Type country names in the slots above to begin comparison.</div></div>`;
+  const countrySlots = slots.map(s => s.country);
+  const renderCell = (value) => !value ? `<span style="color: var(--text-subtle); font-style: italic; font-size: 12px;">Data not available</span>` : `<span style="font-weight: 500;">${escapeHtml(value)}</span>`;
+  const rows = [
+    { section: 'GENERAL' },
+    { label: 'Country', values: countrySlots.map(c => c ? `${c.flag} ${c.name}` : null) },
+    { label: 'Total Population', values: countrySlots.map(c => c ? c.population : null) },
+    { label: 'Population year', values: countrySlots.map(c => c ? c.populationYear : null) },
+    { section: 'HUNGER / FOOD SECURITY' },
+    { label: 'Undernourishment %', values: countrySlots.map(c => c ? c.undernourishment : null), tooltip: 'undernourishment' },
+    { label: 'People affected by hunger', values: countrySlots.map(c => c ? c.peopleAffectedByHunger : null), tooltip: 'undernourishment' },
+    { label: 'Moderate + Severe Food Insecurity', values: countrySlots.map(c => c ? c.moderateSevereFoodInsecurity : null), tooltip: 'foodInsecurity' },
+    { label: 'Severe Food Insecurity', values: countrySlots.map(c => c ? c.severeFoodInsecurity : null), tooltip: 'severeFoodInsecurity' },
+    { label: 'GHI 2025', values: countrySlots.map(c => c ? c.ghi2025 : null), tooltip: 'ghi' },
+    { section: 'FOOD SYSTEM' },
+    { label: 'Food Produced', values: countrySlots.map(c => c ? c.foodProduced : null) },
+    { label: 'Food Lost', values: countrySlots.map(c => c ? c.foodLost : null), tooltip: 'foodLoss' },
+    { label: 'Food Wasted', values: countrySlots.map(c => c ? c.foodWasted : null), tooltip: 'foodWaste' },
+    { label: 'Food Surplus', values: countrySlots.map(c => c ? c.foodSurplus : null), tooltip: 'foodSurplus' },
+    { label: 'People Needing Food', values: countrySlots.map(c => c ? c.peopleNeedingFood : null), tooltip: 'peopleNeedingFood' }
+  ];
+  return `
+    <div class="section-divider"><h3>Comparison Table</h3></div>
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="table-scroll" style="overflow-x: auto;">
+        <table class="comparison-table">
+          <thead><tr><th class="indicator-label">Indicator</th>${countrySlots.map((c, i) => c ? `<th style="min-width: 180px;"><div style="display: flex; align-items: center; gap: 8px;"><span class="flag">${c.flag}</span><span>${escapeHtml(c.name)}</span></div></th>` : `<th style="min-width: 180px;"><span style="color: var(--text-subtle);">Slot ${i+1}</span></th>`).join('')}</tr></thead>
+          <tbody>${rows.map(r => r.section ? `<tr class="section-row"><td colspan="${countrySlots.length + 1}">${r.section}</td></tr>` : `<tr><td class="indicator-label">${escapeHtml(r.label)}${r.tooltip ? `<span class="tooltip"><span class="info-icon">i</span><span class="tooltip-text">${TOOLTIPS[r.tooltip]}</span></span>` : ''}</td>${r.values.map(v => `<td class="col-data">${renderCell(v)}</td>`).join('')}</tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function initComparisonCharts() {
+  const countries = state.comparisonSlots.map(n => findCountry(n)).filter(c => c);
+  if (countries.length === 0) return;
+  const isDark = state.theme === 'dark';
+  const palette = ['#6BB85B', '#E8A53A', '#4A7C3A', '#D85A3A'];
+  const charts = [
+    ['undernourishment-chart', 'undernourishment'],
+    ['hunger-chart', 'peopleAffectedByHunger'],
+    ['modsev-chart', 'moderateSevereFoodInsecurity'],
+    ['sev-chart', 'severeFoodInsecurity'],
+    ['produced-chart', 'foodProduced'],
+    ['lost-chart', 'foodLost'],
+    ['wasted-chart', 'foodWasted'],
+    ['surplus-chart', 'foodSurplus'],
+    ['needing-chart', 'peopleNeedingFood']
+  ];
+  charts.forEach(([id, field]) => {
+    const c = makeBarChart(id, countries, field, isDark, palette);
+    if (c) activeCharts.push(c);
+  });
+}
+
+/* =========================================================
+   COUNTRY DETAIL PAGE
+   ========================================================= */
+function renderCountryDetail() {
+  const country = state.currentCountryDetail ? findCountry(state.currentCountryDetail) : null;
+  if (!country) return `${renderTopBar('Country Detail', '')}<div class="card" style="padding: 40px; text-align: center; color: var(--text-muted);"><div style="font-size: 36px; margin-bottom: 12px;">🔍</div>Country data not available in current dataset.<div style="margin-top: 16px;"><button class="btn-primary" data-view="comparison">Back to Comparison</button></div></div>`;
+  const renderStat = (label, value, tooltipKey) => `<div class="country-detail-stat"><div style="font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px;">${escapeHtml(label)}${tooltipKey ? `<span class="tooltip"><span class="info-icon">i</span><span class="tooltip-text">${TOOLTIPS[tooltipKey]}</span></span>` : ''}</div><div style="font-size: 18px; font-weight: 700; color: var(--text); font-family: 'Sora', sans-serif;">${escapeHtml(value)}</div></div>`;
+  return `
+    ${renderTopBar(`${country.flag} ${country.name}`, `Country code: ${country.code} · Population year: ${country.populationYear}`)}
+    <div class="fade-in">
+      <button class="btn-secondary" data-view="comparison" style="margin-bottom: 20px; padding: 8px 14px; font-size: 13px;">← Back to Comparison</button>
+      <div class="section-divider"><h3>Food Security Overview</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 32px;">${renderStat('Total Population', country.population)}${renderStat('Population Year', country.populationYear)}${renderStat('GHI 2025', country.ghi2025, 'ghi')}</div>
+      <div class="section-divider"><h3>Hunger & Food Security</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 32px;">${renderStat('Undernourishment', country.undernourishment, 'undernourishment')}${renderStat('People Affected by Hunger', country.peopleAffectedByHunger, 'undernourishment')}${renderStat('Moderate + Severe Food Insecurity', country.moderateSevereFoodInsecurity, 'foodInsecurity')}${renderStat('Severe Food Insecurity', country.severeFoodInsecurity, 'severeFoodInsecurity')}</div>
+      <div class="section-divider"><h3>Food Production</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 32px;">${renderStat('Food Produced', country.foodProduced)}</div>
+      <div class="section-divider"><h3>Food Loss & Waste</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 32px;">${renderStat('Food Lost', country.foodLost, 'foodLoss')}${renderStat('Food Wasted', country.foodWasted, 'foodWaste')}</div>
+      <div class="section-divider"><h3>Food Surplus & People in Need</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 32px;">${renderStat('Food Surplus', country.foodSurplus, 'foodSurplus')}${renderStat('People Needing Food', country.peopleNeedingFood, 'peopleNeedingFood')}</div>
+      <div class="section-divider"><h3>Country Food Flow</h3></div>
+      <div class="card" style="padding: 28px;">${renderCountryFlow(country)}</div>
+      <div class="section-divider"><h3>Hunger Risk Indicator Profile</h3></div>
+      <div class="card" style="padding: 20px;"><p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">This is an <strong style="color: var(--text);">indicator-based hunger risk profile</strong>. No composite risk score is computed because no mathematical formula is supplied in the current dataset.</p>${renderHungerRiskProfile(country)}</div>
+    </div>`;
+}
+
+function renderCountryFlow(country) {
+  const steps = [{label:'Food Produced',value:country.foodProduced,color:'#6BB85B'},{label:'Food Lost',value:country.foodLost,color:'#E8A53A'},{label:'Food Wasted',value:country.foodWasted,color:'#D85A3A'},{label:'Food Surplus',value:country.foodSurplus,color:'#4A7C3A'},{label:'People Needing Food',value:country.peopleNeedingFood,color:'#2D5F3F'}];
+  return `<div style="display: flex; flex-direction: column; align-items: center; gap: 0;">${steps.map((s, i) => `<div class="flow-step accent" style="width: 100%; max-width: 460px; border-left-color: ${s.color};"><div style="font-size: 11px; font-weight: 700; color: ${s.color}; letter-spacing: 0.08em; text-transform: uppercase;">${s.label}</div><div style="font-size: 17px; font-weight: 700; margin-top: 4px; font-family: 'Sora', sans-serif;">${escapeHtml(s.value)}</div></div>${i < steps.length - 1 ? `<div class="food-flow-connector"></div>` : ''}`).join('')}</div>`;
+}
+
+function renderHungerRiskProfile(country) {
+  const indicators = [{label:'Undernourishment',value:country.undernourishment},{label:'Moderate + Severe Food Insecurity',value:country.moderateSevereFoodInsecurity},{label:'Severe Food Insecurity',value:country.severeFoodInsecurity},{label:'People Affected by Hunger',value:country.peopleAffectedByHunger},{label:'Food Production',value:country.foodProduced},{label:'Food Loss',value:country.foodLost},{label:'Food Waste',value:country.foodWasted},{label:'Food Surplus',value:country.foodSurplus},{label:'People Needing Food',value:country.peopleNeedingFood}];
+  return `<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">${indicators.map(ind => `<div style="padding: 14px; background: var(--bg-secondary); border-radius: 10px; border-left: 3px solid var(--primary-bright);"><div style="font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;">${escapeHtml(ind.label)}</div><div style="font-size: 15px; font-weight: 600; color: var(--text); margin-top: 4px; font-family: 'Sora', sans-serif;">${escapeHtml(ind.value)}</div></div>`).join('')}</div>`;
+}
+
+/* =========================================================
+   CROP INTELLIGENCE PAGE
+   ========================================================= */
+function renderCropIntelligence() {
+  const stateSearch = state.stateSearch;
+  const filters = state.cropFilters;
+  let results = []; let mode = 'none';
+  if (stateSearch.trim()) {
+    const norm = normalizeText(stateSearch);
+    const matchedStates = getUniqueStates().filter(s => s.toLowerCase().includes(norm));
+    if (matchedStates.length > 0) { results = CROPS.filter(c => c.states && c.states.split(',').some(s => s.trim().toLowerCase() === matchedStates[0].toLowerCase())); mode = 'state'; }
+    else mode = 'state-not-found';
+  } else if (filters.state || filters.season || filters.type || filters.water) { results = filterCrops(filters); mode = 'filter'; }
+  return `
+    ${renderTopBar('India Crop Intelligence', 'Search any Indian state to see associated crops, or use the filter panel below. Each crop card opens complete growing and nutrition intelligence.')}
+    <div class="fade-in">
+      <div class="card" style="padding: 24px; margin-bottom: 24px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; display: block; margin-bottom: 10px;">Search by Indian State</label>
+        <div style="position: relative; max-width: 560px;">
+          <input type="text" id="state-search" class="input" placeholder="Type Indian state name..." value="${escapeHtml(stateSearch)}" autocomplete="off" style="padding-left: 38px;" />
+          <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-subtle);">${ICONS.search}</div>
+          <div id="state-autocomplete" class="autocomplete-list" style="display: none;"></div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">Examples: Andhra Pradesh, Tamil Nadu, Kerala, Punjab, Maharashtra, Assam, West Bengal</div>
+      </div>
+      <div class="card" style="padding: 20px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase;">Advanced Filters</div>
+          <button id="reset-filters" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">Reset</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+          <div><label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">State</label><select class="input filter-select" data-filter="state" style="padding: 9px 12px;"><option value="">All states</option>${getUniqueStates().map(s => `<option value="${escapeHtml(s)}" ${filters.state === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}</select></div>
+          <div><label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Season</label><select class="input filter-select" data-filter="season" style="padding: 9px 12px;"><option value="">All seasons</option>${['Kharif','Rabi','Perennial','Annual','Summer'].map(s => `<option value="${s}" ${filters.season === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+          <div><label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Crop Type</label><select class="input filter-select" data-filter="type" style="padding: 9px 12px;"><option value="">All crops</option><option value="food" ${filters.type === 'food' ? 'selected' : ''}>Food crop</option><option value="non-food" ${filters.type === 'non-food' ? 'selected' : ''}>Non-food crop</option></select></div>
+          <div><label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Water Requirement</label><select class="input filter-select" data-filter="water" style="padding: 9px 12px;"><option value="">Any</option><option value="low" ${filters.water === 'low' ? 'selected' : ''}>Low (&lt;600 mm)</option><option value="medium" ${filters.water === 'medium' ? 'selected' : ''}>Medium (600–900 mm)</option><option value="high" ${filters.water === 'high' ? 'selected' : ''}>High (&gt;900 mm)</option></select></div>
+        </div>
+      </div>
+      ${mode === 'state' ? `<div class="section-divider"><h3>Crops associated with ${escapeHtml(stateSearch)}</h3></div>${results.length > 0 ? `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">${results.map(c => renderCropCard(c)).join('')}</div>` : `<div class="card" style="padding: 32px; text-align: center; color: var(--text-muted);">No crops found for this state in the current dataset.</div>`}` : mode === 'state-not-found' ? `<div class="card" style="padding: 32px; text-align: center;"><div style="font-size: 32px; margin-bottom: 10px;">🌾</div><div style="font-weight: 600; color: var(--warning); margin-bottom: 4px;">No crop intelligence data available for this state in the current dataset.</div><div style="font-size: 13px; color: var(--text-muted);">Try a different state name or use the filters above.</div></div>` : mode === 'filter' ? `<div class="section-divider"><h3>Filtered Crops (${results.length})</h3></div><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">${results.map(c => renderCropCard(c)).join('')}</div>` : `<div class="section-divider"><h3>All Crops in Dataset (${CROPS.length})</h3></div><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">${CROPS.map(c => renderCropCard(c)).join('')}</div>`}
+    </div>`;
+}
+
+function renderCropCard(crop) {
+  const icon = crop.type === 'food' ? '🌾' : '🌱';
+  return `<div class="crop-card" data-crop-detail="${escapeHtml(crop.name)}"><div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px;"><div style="display: flex; align-items: center; gap: 10px;"><span style="font-size: 22px;">${icon}</span><div><div style="font-weight: 700; font-size: 15px; font-family: 'Sora', sans-serif;">${escapeHtml(crop.name)}</div><div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(crop.season)}</div></div></div><span class="pill ${crop.type === 'food' ? 'pill-green' : 'pill-amber'}">${crop.type === 'food' ? 'FOOD' : 'NON-FOOD'}</span></div><div style="font-size: 12px; color: var(--text-muted); line-height: 1.55;"><div style="margin-bottom: 4px;"><strong style="color: var(--text);">Soil:</strong> ${escapeHtml(crop.soil)}</div><div style="margin-bottom: 4px;"><strong style="color: var(--text);">Temp:</strong> ${escapeHtml(crop.temperature)}</div><div><strong style="color: var(--text);">Water:</strong> ${escapeHtml(crop.water)}</div></div><div style="margin-top: 12px; font-size: 12px; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 6px;">View full intelligence ${ICONS.arrowRight}</div></div>`;
+}
+
+/* =========================================================
+   CROP DETAIL PAGE
+   ========================================================= */
+function renderCropDetail() {
+  const crop = CROPS.find(c => c.name === state.currentCropDetail);
+  if (!crop) return `${renderTopBar('Crop Intelligence', '')}<div class="card" style="padding: 40px; text-align: center; color: var(--text-muted);">Crop data not available in current dataset.<div style="margin-top: 16px;"><button class="btn-primary" data-view="crop-intelligence">Back to Crop Search</button></div></div>`;
+  const icon = crop.type === 'food' ? '🌾' : '🌱';
+  const renderField = (label, value) => !value ? '' : `<div style="padding: 14px 16px; background: var(--bg-secondary); border-radius: 10px; border-left: 3px solid var(--primary-bright);"><div style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px;">${escapeHtml(label)}</div><div style="font-size: 14px; color: var(--text); line-height: 1.55;">${escapeHtml(value)}</div></div>`;
+  return `
+    ${renderTopBar(`${icon} ${crop.name}`, 'Crop intelligence profile from the supplied India crop dataset.')}
+    <div class="fade-in">
+      <button class="btn-secondary" data-view="crop-intelligence" style="margin-bottom: 20px; padding: 8px 14px; font-size: 13px;">← Back to Crop Search</button>
+      <div style="display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;"><span class="pill ${crop.type === 'food' ? 'pill-green' : 'pill-amber'}">${crop.type === 'food' ? 'FOOD CROP' : 'NON-FOOD CROP'}</span><span class="pill pill-neutral">${escapeHtml(crop.season)}</span></div>
+      <div class="section-divider"><h3>Growing Requirements</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 32px;">${renderField('States / UTs', crop.states)}${renderField('Season', crop.season)}${renderField('Soil', crop.soil)}${renderField('Temperature', crop.temperature)}${renderField('Water', crop.water)}${renderField('Sunlight', crop.sunlight)}${renderField('Main Attackers', crop.attackers)}${renderField('Growing Technique', crop.growingTechnique)}</div>
+      ${crop.nutrition ? `<div class="section-divider"><h3>Nutrition / 100 g</h3></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 32px;">${renderField('Calories', crop.nutrition.calories)}${renderField('Protein', crop.nutrition.protein)}${renderField('Carbohydrates', crop.nutrition.carbohydrates)}${renderField('Fibre', crop.nutrition.fibre)}${renderField('Fat', crop.nutrition.fat)}${renderField('Micronutrients', crop.nutrition.micronutrients)}${renderField('GI', crop.nutrition.gi)}${renderField('Benefits', crop.nutrition.benefits)}${renderField('Processing', crop.nutrition.processing)}</div>` : `<div class="section-divider"><h3>Nutrition</h3></div><div class="card" style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">Nutrition data not available in current dataset for this crop.</div>`}
+    </div>`;
+}
+
+/* =========================================================
+   FOOD STORAGE PAGE
+   ========================================================= */
+function renderStorage() {
+  return `
+    ${renderTopBar('Food Storage Intelligence', 'Storage guidance across three tiers — Households, Hotels/Restaurants, and Supply Vendors — covering the eight critical storage factors in the supplied dataset.')}
+    <div class="fade-in">
+      <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+        <div class="table-scroll" style="overflow-x: auto;">
+          <table class="comparison-table">
+            <thead><tr><th class="indicator-label">Storage Factor</th><th style="min-width: 200px;">🏠 Households</th><th style="min-width: 200px;">🍽️ Hotels / Restaurants</th><th style="min-width: 220px;">📦 Supply Vendors</th></tr></thead>
+            <tbody>${STORAGE.map((row, i) => `<tr><td class="indicator-label" style="${i === STORAGE.length - 1 ? 'border-bottom: none;' : ''}">${escapeHtml(row.factor)}</td><td class="col-data" style="${i === STORAGE.length - 1 ? 'border-bottom: none;' : ''}">${escapeHtml(row.household)}</td><td class="col-data" style="${i === STORAGE.length - 1 ? 'border-bottom: none;' : ''}">${escapeHtml(row.hotelRestaurant)}</td><td class="col-data" style="${i === STORAGE.length - 1 ? 'border-bottom: none;' : ''}">${escapeHtml(row.supplyVendor)}</td></tr>`).join('')}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="section-divider"><h3>Crop-Specific Storage Selector</h3></div>
+      <div class="card" style="padding: 20px; margin-bottom: 16px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; display: block; margin-bottom: 10px;">Select a Crop</label>
+        <select id="storage-crop-select" class="input" style="max-width: 360px;"><option value="">— Select a crop —</option>${CROPS.map(c => `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('')}</select>
+      </div>
+      <div id="crop-storage-info"></div>
+      <div class="methodology-note" style="margin-top: 24px;"><strong>Note:</strong> The storage table above is the general guidance supplied in the project dataset. Crop-specific storage data has not been supplied separately; where a crop is selected above, the general storage guidance still applies and no crop-specific values are invented.</div>
+    </div>`;
+}
+
+/* =========================================================
+   FOOD SURPLUS & HUNGER PAGE
+   ========================================================= */
+function renderSurplus() {
+  return `
+    ${renderTopBar('Food Surplus & Hunger Analysis', 'A visual flow of food from production through loss, waste, and surplus to redistribution and people needing food. Indicator-based hunger risk profile included — no composite risk score is computed because no formula is supplied.')}
+    <div class="fade-in">
+      <div class="card" style="padding: 18px; margin-bottom: 24px;">
+        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; display: block; margin-bottom: 8px;">Select Country for Food Flow</label>
+        <select id="surplus-country-select" class="input" style="max-width: 360px;">${COUNTRIES.map(c => `<option value="${escapeHtml(c.name)}">${c.flag} ${escapeHtml(c.name)}</option>`).join('')}</select>
+      </div>
+      <div id="surplus-flow-container"></div>
+      <div class="section-divider"><h3>Cross-Country Food System Comparison</h3></div>
+      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Bars use the midpoint of any range for height. The original supplied value is shown as a data label above each bar.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px;">
+        ${renderChartCard('surplus-produced-chart', 'Food Produced (mt)')}
+        ${renderChartCard('surplus-lost-chart', 'Food Lost (mt)')}
+        ${renderChartCard('surplus-wasted-chart', 'Food Wasted (mt)')}
+        ${renderChartCard('surplus-surplus-chart', 'Food Surplus (mt)')}
+      </div>
+      <div class="section-divider"><h3>Indicator-Based Hunger Risk Profile</h3></div>
+      <div class="card" style="padding: 20px; margin-bottom: 24px;">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">No composite "risk score" is computed because no explicit mathematical formula has been supplied in the project dataset. The following indicators are displayed individually as the project's <strong style="color: var(--text);">indicator-based hunger risk profile</strong>.</p>
+        <div id="hunger-risk-profile"></div>
+      </div>
+      <div class="methodology-note"><strong>Project-defined model notice:</strong> If a composite risk score is implemented later in this platform, its exact mathematical formula will be published in the Data &amp; Methodology section, and it will be clearly labelled as a project-defined model — not as an authoritative metric.</div>
+    </div>`;
+}
+
+function renderSurplusFlow(countryName) {
+  const country = findCountry(countryName);
+  if (!country) return `<div class="card" style="padding: 24px;">Country data not available in current dataset.</div>`;
+  const steps = [{label:'FOOD PRODUCTION',value:country.foodProduced,color:'#6BB85B',desc:'Total food produced annually'},{label:'FOOD LOSS',value:country.foodLost,color:'#E8A53A',desc:'Lost along supply chain before retail'},{label:'FOOD WASTE',value:country.foodWasted,color:'#D85A3A',desc:'Discarded at retail/household level'},{label:'USABLE SURPLUS',value:country.foodSurplus,color:'#4A7C3A',desc:'Potential redistribution surplus'},{label:'STORAGE',value:'Refer to Storage Guide',color:'#88D977',desc:'Storage tier guidance applies'},{label:'REDISTRIBUTION',value:'Channel to people in need',color:'#88D977',desc:'Logistics & policy dependent'},{label:'PEOPLE NEEDING FOOD',value:country.peopleNeedingFood,color:'#2D5F3F',desc:'Population requiring food access'}];
+  return `<div class="card" style="padding: 28px; margin-bottom: 24px;"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;"><span style="font-size: 32px;">${country.flag}</span><div><div style="font-weight: 700; font-size: 18px; font-family: 'Sora', sans-serif;">${escapeHtml(country.name)} — Food Flow</div><div style="font-size: 12px; color: var(--text-muted);">Production → Loss → Waste → Surplus → Redistribution → People in Need</div></div></div><div style="display: flex; flex-direction: column; align-items: center; gap: 0;">${steps.map((s, i) => `<div class="flow-step accent" style="width: 100%; max-width: 520px; border-left-color: ${s.color};"><div style="font-size: 11px; font-weight: 700; color: ${s.color}; letter-spacing: 0.08em;">${s.label}</div><div style="font-size: 17px; font-weight: 700; margin-top: 4px; font-family: 'Sora', sans-serif;">${escapeHtml(s.value)}</div><div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">${escapeHtml(s.desc)}</div></div>${i < steps.length - 1 ? `<div class="food-flow-connector"></div>` : ''}`).join('')}</div></div>`;
+}
+
+function initSurplusCharts() {
+  const isDark = state.theme === 'dark';
+  const palette = ['#6BB85B', '#E8A53A', '#4A7C3A', '#D85A3A'];
+  const charts = [['surplus-produced-chart', 'foodProduced'], ['surplus-lost-chart', 'foodLost'], ['surplus-wasted-chart', 'foodWasted'], ['surplus-surplus-chart', 'foodSurplus']];
+  charts.forEach(([id, field]) => {
+    const c = makeBarChart(id, COUNTRIES, field, isDark, palette);
+    if (c) activeCharts.push(c);
+  });
+  const flowContainer = document.getElementById('surplus-flow-container');
+  if (flowContainer) flowContainer.innerHTML = renderSurplusFlow(state.currentCountryDetail || 'India');
+  const profileContainer = document.getElementById('hunger-risk-profile');
+  if (profileContainer) {
+    const indicators = [{field:'undernourishment',label:'Undernourishment'},{field:'moderateSevereFoodInsecurity',label:'Moderate + Severe Food Insecurity'},{field:'severeFoodInsecurity',label:'Severe Food Insecurity'},{field:'peopleAffectedByHunger',label:'People Affected by Hunger'},{field:'foodProduced',label:'Food Production'},{field:'foodLost',label:'Food Loss'},{field:'foodWasted',label:'Food Waste'},{field:'foodSurplus',label:'Food Surplus'},{field:'peopleNeedingFood',label:'People Needing Food'}];
+    profileContainer.innerHTML = `<div style="overflow-x: auto;"><table class="comparison-table"><thead><tr><th class="indicator-label">Indicator</th>${COUNTRIES.map(c => `<th style="min-width: 140px;">${c.flag} ${escapeHtml(c.name)}</th>`).join('')}</tr></thead><tbody>${indicators.map(ind => `<tr><td class="indicator-label">${escapeHtml(ind.label)}</td>${COUNTRIES.map(c => `<td class="col-data">${escapeHtml(c[ind.field])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+}
+
+/* =========================================================
+   DASHBOARD PAGE
+   ========================================================= */
+function renderDashboard() {
+  const selectedCountries = state.comparisonSlots.map(n => findCountry(n)).filter(c => c);
+  const sumField = (field) => selectedCountries.reduce((acc, c) => { const p = parseNumericValue(c[field]); return acc + (p && p.avg ? p.avg : 0); }, 0);
+  return `
+    ${renderTopBar('Platform Dashboard', 'Quick navigation and aggregate metrics across the countries currently selected for comparison.')}
+    <div class="fade-in">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 28px;">
+        ${[{label:'Total countries available',value:COUNTRIES.length},{label:'Total crops available',value:CROPS.length},{label:'Countries selected for comparison',value:selectedCountries.length},{label:'Indian states covered',value:getUniqueStates().length}].map(s => `<div class="stat-card"><div style="font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--primary);line-height:1;">${s.value}</div><div style="color:var(--text-muted);font-size:12px;margin-top:6px;font-weight:500;">${s.label}</div></div>`).join('')}
+      </div>
+      <div class="section-divider"><h3>Food System Summary (Selected Countries)</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 28px;">
+        ${[{label:'Total Food Produced (avg, mt)',value:sumField('foodProduced').toFixed(0)+' mt',color:'#6BB85B'},{label:'Total Food Lost (avg, mt)',value:sumField('foodLost').toFixed(0)+' mt',color:'#E8A53A'},{label:'Total Food Wasted (avg, mt)',value:sumField('foodWasted').toFixed(0)+' mt',color:'#D85A3A'},{label:'Total Food Surplus (avg, mt)',value:sumField('foodSurplus').toFixed(0)+' mt',color:'#4A7C3A'}].map(s => `<div class="stat-card" style="border-left: 3px solid ${s.color};"><div style="font-family:'Sora',sans-serif;font-size:24px;font-weight:700;color:var(--text);line-height:1.1;">${s.value}</div><div style="color:var(--text-muted);font-size:12px;margin-top:6px;font-weight:500;">${s.label}</div></div>`).join('')}
+      </div>
+      <div class="section-divider"><h3>Currently Selected Countries</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 28px;">
+        ${selectedCountries.map(c => `<div class="card" style="padding: 18px; cursor: pointer;" data-country-detail="${escapeHtml(c.name)}"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;"><span style="font-size: 28px;">${c.flag}</span><div><div style="font-weight: 700; font-size: 15px; font-family: 'Sora', sans-serif;">${escapeHtml(c.name)}</div><div style="font-size: 11px; color: var(--text-muted);">Population: ${escapeHtml(c.population)}</div></div></div><div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;"><div>Undernourishment: <strong style="color: var(--text);">${escapeHtml(c.undernourishment)}</strong></div><div>GHI 2025: <strong style="color: var(--text);">${escapeHtml(c.ghi2025)}</strong></div><div>People needing food: <strong style="color: var(--text);">${escapeHtml(c.peopleNeedingFood)}</strong></div></div></div>`).join('')}
+      </div>
+      <div class="section-divider"><h3>Comparison Overview</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-bottom: 28px;">
+        ${renderChartCard('dashboard-prod-chart', 'Food Production by Country')}
+        ${renderChartCard('dashboard-needing-chart', 'People Needing Food by Country')}
+      </div>
+      <div class="section-divider"><h3>Quick Navigation</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+        ${[{v:'comparison',l:'Country Comparison',i:'🌍'},{v:'crop-intelligence',l:'Crop Intelligence',i:'🌾'},{v:'storage',l:'Storage Guide',i:'📦'},{v:'surplus',l:'Surplus Analysis',i:'🍚'},{v:'methodology',l:'Data & Methodology',i:'📊'}].map(n => `<div class="module-card" data-view="${n.v}" style="padding: 18px;"><div style="font-size: 22px; margin-bottom: 8px;">${n.i}</div><div style="font-weight: 600; font-size: 14px;">${n.l}</div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function initDashboardCharts() {
+  const isDark = state.theme === 'dark';
+  const palette = ['#6BB85B', '#E8A53A', '#4A7C3A', '#D85A3A'];
+  const countries = state.comparisonSlots.map(n => findCountry(n)).filter(c => c);
+  const charts = [['dashboard-prod-chart', 'foodProduced'], ['dashboard-needing-chart', 'peopleNeedingFood']];
+  charts.forEach(([id, field]) => {
+    const c = makeBarChart(id, countries, field, isDark, palette);
+    if (c) activeCharts.push(c);
+  });
+}
+
+/* =========================================================
+   METHODOLOGY PAGE
+   ========================================================= */
+function renderMethodology() {
+  return `
+    ${renderTopBar('Data & Methodology', 'Scope, sources, limitations, and integrity rules of the data used in this platform.')}
+    <div class="fade-in">
+      <div class="methodology-note" style="margin-bottom: 24px;"><strong>Notice:</strong> Figures shown in this prototype are based on the supplied project dataset. Values should be independently verified against authoritative sources before being used for policy, academic publication, or real-world decisions.</div>
+      <div class="section-divider"><h3>Datasets Used</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 28px;">
+        ${[{name:'Country Food Security Dataset',count:COUNTRIES.length+' countries',fields:'13 indicators per country'},{name:'India Crop Intelligence Dataset',count:CROPS.length+' crops',fields:'States, season, soil, climate, nutrition'},{name:'Food Storage Dataset',count:STORAGE.length+' factors',fields:'3 storage tiers'}].map(d => `<div class="card" style="padding: 18px;"><div style="font-weight: 700; font-size: 14px; font-family: 'Sora', sans-serif; margin-bottom: 6px;">${d.name}</div><div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">${d.count}</div><div style="font-size: 12px; color: var(--text-muted);">${d.fields}</div></div>`).join('')}
+      </div>
+      <div class="section-divider"><h3>Data Integrity Rules</h3></div>
+      <div class="card" style="padding: 22px; margin-bottom: 24px;"><ol style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.7; color: var(--text);"><li>The website is a data visualization and analysis system. It never invents statistics.</li><li>Country values are kept exactly as supplied — including approximate symbols (≈), "less-than" markers (&lt;), ranges, and "Not ranked".</li><li>Ranges are not converted into fake single numbers. Charts use the midpoint for bar height, and the original range text is shown as a data label.</li><li>Missing data is shown as "Data not available in current dataset" — never silently replaced with 0.</li><li>Country search supports case-insensitive matching and trims spaces. "USA", "usa", "United States" all resolve to the same dataset entry.</li><li>State search returns <strong>only</strong> crops whose supplied <em>States/UTs</em> field contains the searched state.</li><li>No composite "hunger risk score" is computed. Indicators are displayed individually as an indicator-based hunger risk profile.</li><li>Crop-specific storage data is not invented. The general storage table applies to all crops.</li></ol></div>
+      <div class="section-divider"><h3>Indicator Definitions</h3></div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 24px;">${Object.entries(TOOLTIPS).map(([key, val]) => `<div class="card" style="padding: 16px;"><div style="font-weight: 700; font-size: 13px; text-transform: capitalize; margin-bottom: 6px; font-family: 'Sora', sans-serif;">${key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())}</div><div style="font-size: 12px; color: var(--text-muted); line-height: 1.55;">${val}</div></div>`).join('')}</div>
+      <div class="section-divider"><h3>Hunger Risk Methodology</h3></div>
+      <div class="card" style="padding: 22px; margin-bottom: 24px;"><p style="font-size: 14px; line-height: 1.7; color: var(--text);">The platform presents an <strong>indicator-based hunger risk profile</strong> — a transparent display of individual food-security indicators (undernourishment, moderate+severe food insecurity, severe food insecurity, people affected by hunger, food production, food loss, food waste, food surplus, and people needing food).</p><p style="font-size: 14px; line-height: 1.7; color: var(--text); margin-top: 12px;">No arbitrary composite "risk score" is computed. If a project-defined model is implemented later on this platform, its exact mathematical formula will be published in this section and the metric will be clearly labelled as a project-defined model — not as an authoritative index.</p></div>
+      <div class="warning-note"><strong>Verification reminder:</strong> The application does not claim that the data has been independently verified. All figures should be cross-checked against authoritative sources (FAO, IFAD, WHO, UN Hunger Report, GHI reports, Indian Ministry of Agriculture, etc.) before being used beyond this prototype.</div>
+    </div>`;
+}
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+function attachGlobalListeners() {
+  document.getElementById('theme-toggle')?.addEventListener('click', () => { state.theme = state.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('sdg2-theme', state.theme); render(); });
+  document.getElementById('mobile-menu-toggle')?.addEventListener('click', () => { const menu = document.getElementById('mobile-menu'); menu.style.display = menu.style.display === 'none' ? 'block' : 'none'; });
+  document.querySelectorAll('[data-view]').forEach(el => { el.addEventListener('click', (e) => { e.preventDefault(); navigate(el.getAttribute('data-view')); }); });
+
+  document.querySelectorAll('.country-search-input').forEach(input => {
+    input.addEventListener('input', (e) => {
+      const slotIdx = parseInt(input.getAttribute('data-slot'));
+      state.comparisonInput[slotIdx] = e.target.value;
+      state.autocompleteOpen[slotIdx] = true;
+      const slotsContainer = document.getElementById('country-slots');
+      if (slotsContainer) {
+        const slots = state.comparisonSlots.map((name, i) => { const country = findCountry(name); const isDuplicate = name && state.comparisonSlots.filter(s => s && s.toLowerCase() === name.toLowerCase()).length > 1; return { name, country, isDuplicate, index: i }; });
+        slotsContainer.innerHTML = slots.map((s, i) => renderCountrySlot(s, i)).join('\n');
+        attachGlobalListeners();
+      }
+    });
+    input.addEventListener('focus', (e) => {
+      const slotIdx = parseInt(input.getAttribute('data-slot'));
+      state.autocompleteOpen[slotIdx] = true;
+      if (e.target.value.length > 0) {
+        const slotsContainer = document.getElementById('country-slots');
+        if (slotsContainer) {
+          const slots = state.comparisonSlots.map((name, i) => { const country = findCountry(name); const isDuplicate = name && state.comparisonSlots.filter(s => s && s.toLowerCase() === name.toLowerCase()).length > 1; return { name, country, isDuplicate, index: i }; });
+          slotsContainer.innerHTML = slots.map((s, i) => renderCountrySlot(s, i)).join('\n');
+          attachGlobalListeners();
+          const newInput = document.querySelector(`.country-search-input[data-slot="${slotIdx}"]`);
+          if (newInput) { newInput.focus(); newInput.setSelectionRange(newInput.value.length, newInput.value.length); }
+        }
+      }
+    });
+    input.addEventListener('blur', (e) => {
+      const slotIdx = parseInt(input.getAttribute('data-slot'));
+      setTimeout(() => {
+        state.autocompleteOpen[slotIdx] = false;
+        const val = e.target.value.trim();
+        if (val === '') { state.comparisonSlots[slotIdx] = ''; state.comparisonInput[slotIdx] = ''; }
+        else { const country = findCountry(val); if (country) { state.comparisonSlots[slotIdx] = country.name; state.comparisonInput[slotIdx] = ''; } else { state.comparisonSlots[slotIdx] = val; state.comparisonInput[slotIdx] = ''; } }
+        render();
+      }, 150);
+    });
+  });
+
+  document.querySelectorAll('.autocomplete-item').forEach(item => {
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      const country = item.getAttribute('data-country');
+      const slotIdx = parseInt(item.getAttribute('data-slot'));
+      state.comparisonSlots[slotIdx] = country;
+      state.comparisonInput[slotIdx] = '';
+      state.autocompleteOpen[slotIdx] = false;
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-country-detail]').forEach(el => { el.addEventListener('click', (e) => { e.stopPropagation(); state.currentCountryDetail = el.getAttribute('data-country-detail'); navigate('country-detail'); }); });
+  document.querySelectorAll('[data-crop-detail]').forEach(el => { el.addEventListener('click', () => { state.currentCropDetail = el.getAttribute('data-crop-detail'); navigate('crop-detail'); }); });
+
+  const stateSearch = document.getElementById('state-search');
+  if (stateSearch) {
+    stateSearch.addEventListener('input', (e) => {
+      state.stateSearch = e.target.value;
+      const autocomplete = document.getElementById('state-autocomplete');
+      if (e.target.value.length > 0) {
+        const matches = getUniqueStates().filter(s => s.toLowerCase().includes(e.target.value.toLowerCase())).slice(0, 8);
+        if (matches.length > 0) {
+          autocomplete.style.display = 'block';
+          autocomplete.innerHTML = matches.map(s => `<div class="autocomplete-item" data-state="${escapeHtml(s)}">${escapeHtml(s)}</div>`).join('');
+          autocomplete.querySelectorAll('.autocomplete-item').forEach(item => { item.addEventListener('mousedown', (ev) => { ev.preventDefault(); state.stateSearch = item.getAttribute('data-state'); render(); }); });
+        } else autocomplete.style.display = 'none';
+      } else autocomplete.style.display = 'none';
+    });
+    stateSearch.addEventListener('blur', () => { setTimeout(() => { const a = document.getElementById('state-autocomplete'); if (a) a.style.display = 'none'; }, 150); });
+    stateSearch.addEventListener('keydown', (e) => { if (e.key === 'Enter') { state.stateSearch = e.target.value.trim(); render(); } });
+  }
+
+  document.querySelectorAll('.filter-select').forEach(sel => { sel.addEventListener('change', (e) => { state.cropFilters[e.target.getAttribute('data-filter')] = e.target.value; render(); }); });
+  document.getElementById('reset-filters')?.addEventListener('click', () => { state.cropFilters = { state: '', season: '', type: '', water: '' }; state.stateSearch = ''; render(); });
+
+  const storageSelect = document.getElementById('storage-crop-select');
+  if (storageSelect) {
+    storageSelect.addEventListener('change', (e) => {
+      const cropName = e.target.value;
+      const info = document.getElementById('crop-storage-info');
+      if (!cropName) { info.innerHTML = ''; return; }
+      const crop = CROPS.find(c => c.name === cropName);
+      if (!crop) { info.innerHTML = `<div class="card" style="padding: 20px;">Crop not found in dataset.</div>`; return; }
+      info.innerHTML = `<div class="card" style="padding: 22px; margin-top: 16px;"><div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;"><span style="font-size: 28px;">${crop.type === 'food' ? '🌾' : '🌱'}</span><div><div style="font-weight: 700; font-size: 16px; font-family: 'Sora', sans-serif;">${escapeHtml(crop.name)}</div><div style="font-size: 12px; color: var(--text-muted);">Season: ${escapeHtml(crop.season)}</div></div></div><div class="methodology-note" style="margin-bottom: 16px;">Crop-specific storage guidance is not separately supplied in the project dataset for <strong>${escapeHtml(crop.name)}</strong>. The general storage factors below apply.</div><div style="overflow-x: auto;"><table class="comparison-table" style="font-size: 13px;"><thead><tr><th class="indicator-label">Storage Factor</th><th>🏠 Households</th><th>🍽️ Hotels / Restaurants</th><th>📦 Supply Vendors</th></tr></thead><tbody>${STORAGE.map(row => `<tr><td class="indicator-label">${escapeHtml(row.factor)}</td><td class="col-data">${escapeHtml(row.household)}</td><td class="col-data">${escapeHtml(row.hotelRestaurant)}</td><td class="col-data">${escapeHtml(row.supplyVendor)}</td></tr>`).join('')}</tbody></table></div><div style="margin-top: 16px; padding: 14px; background: var(--bg-secondary); border-radius: 10px; font-size: 12px; color: var(--text-muted);"><strong style="color: var(--text);">Crop growing notes:</strong> ${escapeHtml(crop.soil || 'N/A')} soil · ${escapeHtml(crop.temperature || 'N/A')} · Water: ${escapeHtml(crop.water || 'N/A')}</div></div>`;
+    });
+  }
+
+  const surplusSelect = document.getElementById('surplus-country-select');
+  if (surplusSelect) {
+    surplusSelect.addEventListener('change', (e) => { state.currentCountryDetail = e.target.value; const flowContainer = document.getElementById('surplus-flow-container'); if (flowContainer) flowContainer.innerHTML = renderSurplusFlow(e.target.value); });
+    if (!state.currentCountryDetail) state.currentCountryDetail = 'India';
+    surplusSelect.value = state.currentCountryDetail;
+  }
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+function init() {
+  if (!state.currentCountryDetail) state.currentCountryDetail = 'India';
+  render();
+}
+init();
+</script>
+</body>
+</html>

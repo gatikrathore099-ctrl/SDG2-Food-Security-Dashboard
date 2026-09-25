@@ -64,4 +64,7 @@ No backend server is required for the current version.
 SDG2-Food-Security-Dashboard/
 │
 ├── index.html
-└── README.md
+├── README.md
+└── screenshots/
+    ├── dashboard.png
+    └── risk-analysis.png
